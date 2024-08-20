@@ -1,0 +1,6 @@
+﻿services:
+  myzhihuweb:
+    image: myzhihuweb
+    build:
+      context: .
+      dockerfile: MyZhiHuWeb/Dockerfile
