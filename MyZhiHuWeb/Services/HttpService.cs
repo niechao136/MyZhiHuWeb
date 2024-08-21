@@ -25,11 +25,11 @@ public class HttpService(IConfiguration configuration)
         return client;
     }
 
-    public async Task<T> PostAsync<T>(string url, string body = "{}", string type = "application/json")
+    public async Task<T> PostAsync<T>(string url, string body = "{}", string type = "application/json", string api = "/api/")
     {
         HttpContent content = new StringContent(body);
         content.Headers.ContentType = new MediaTypeHeaderValue(type);
-        var address = configuration["API_URL"] + url;
+        var address = configuration["API_URL"] + api + url;
         var res = await Client.PostAsync(address, content);
         var result = await res.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<T>(result)!;
