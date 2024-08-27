@@ -1,35 +1,59 @@
 @page "/login"
-@using System.Security.Cryptography
-@using System.Text
-@using Result = MyZhiHuWeb.Models.Result
+@using System.Text.Json.Serialization
 @layout LoginLayout
-@inject NavigationManager Manager
-@inject HttpService Http
+
+<PageTitle>登入</PageTitle>
 
 <div class="login">
-    <div class="form">
-        <AntDesign.Input TValue="string" Placeholder="用户名: admin or user" @bind-Value="username">
-            <Prefix>
-                <Icon Type="@IconType.Outline.User"></Icon>
-            </Prefix>
-        </AntDesign.Input>
-        <InputPassword Placeholder="密码: abc123" @bind-Value="password">
-            <Prefix>
-                <Icon Type="@IconType.Outline.Lock"></Icon>
-            </Prefix>
-        </InputPassword>
-        <div class="area">
-            <Checkbox @bind-Checked="remember">记住密码</Checkbox>
+    <Form
+        Model="_model"
+        OnFinish="Submit"
+        TModel="Model">
+        <FormItem Name="Username">
+            <AntDesign.Input
+                Placeholder="用户名: admin or user"
+                Size="@InputSize.Large"
+                TValue="string"
+                @bind-Value="@context.Username">
+                <Prefix>
+                    <Icon Type="@IconType.Outline.User"></Icon>
+                </Prefix>
+            </AntDesign.Input>
+        </FormItem>
+        <FormItem Name="Password">
+            <InputPassword
+                Placeholder="密码: abc123"
+                Size="@InputSize.Large"
+                @bind-Value="@context.Password">
+                <Prefix>
+                    <Icon Type="@IconType.Outline.Lock"></Icon>
+                </Prefix>
+            </InputPassword>
+        </FormItem>
+        <FormItem>
+            <Checkbox @bind-Checked="Remember">
+                记住密码
+            </Checkbox>
             <Button Type="@ButtonType.Link" OnClick="Register">注册</Button>
-        </div>
-        <Button Type="@ButtonType.Primary" OnClick="Submit">登录</Button>
-    </div>
+        </FormItem>
+        <FormItem>
+            <Button Type="@ButtonType.Primary" HtmlType="submit">登入</Button>
+        </FormItem>
+    </Form>
 </div>
 
 @code {
-    private string username { get; set; }
-    private string password { get; set; }
-    private bool remember { get; set; }
+
+    public class Model
+    {
+        [Required]
+        public string? Username { get; set; }
+        [Required]
+        public string? Password { get; set; }
+    }
+
+    private readonly Model _model = new();
+    private bool Remember { get; set; }
 
     private void Register()
     {
@@ -38,16 +62,16 @@
 
     private async Task Submit()
     {
-        var bytes = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(password));
+        var bytes = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(_model.Password!));
         var md5 = BitConverter.ToString(bytes).Replace("-", "").ToLower();
-        var auth = new Auth
-        {
-            Username = username,
-            Password = md5
-        };
-        var res = await Http.PostAsync<Result.Base<string>>(url: "auth/login", body: JsonConvert.SerializeObject(auth));
 
-        if (res.Status == Result.StatusCode.Success)
+        var res = await Http.PostAsync<Res.MsgModel<string>>(url: "auth/login", body: new Auth
+        {
+            Username = _model.Username,
+            Password = md5
+        });
+
+        if (res?.status == StatusCode.Success)
         {
             Manager.NavigateTo("/");
         }

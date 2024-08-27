@@ -1,0 +1,79 @@
+@page "/Register"
+@layout LoginLayout
+
+<PageTitle>注册</PageTitle>
+
+<div class="register">
+    <div class="form">
+        <Input
+            Placeholder="用户名"
+            Size="@InputSize.Large"
+            TValue="string"
+            @bind-Value="Username"
+        />
+        <InputPassword
+            Placeholder="密码"
+            Size="@InputSize.Large"
+            @bind-Value="Password"
+        />
+        <InputPassword
+            Placeholder="确认密码"
+            Size="@InputSize.Large"
+            @bind-Value="ConfirmPassword"
+        />
+        <Input
+            Placeholder="昵称"
+            Size="@InputSize.Large"
+            TValue="string"
+            @bind-Value="Nickname"
+        />
+        <Input
+            Placeholder="邮箱"
+            Size="@InputSize.Large"
+            TValue="string"
+            @bind-Value="Email"
+        />
+        <Input
+            Placeholder="手机"
+            Size="@InputSize.Large"
+            TValue="string"
+            @bind-Value="Phone"
+        />
+        <Button
+            Type="@ButtonType.Primary"
+            OnClick="Submit">
+            注册
+        </Button>
+    </div>
+</div>
+
+@code {
+
+    private string? Username { get; set; }
+    private string? Password { get; set; }
+    private string? ConfirmPassword { get; set; }
+    private string? Nickname { get; set; }
+    private string? Email { get; set; }
+    private string? Phone { get; set; }
+
+    private async Task Submit()
+    {
+        var bytes = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(Password!));
+        var md5 = BitConverter.ToString(bytes).Replace("-", "").ToLower();
+
+        var res = await Http.PostAsync<Res.MsgModel<string>>("user/register", new User.Register
+        {
+            Username = Username,
+            Password = md5,
+            Role = UserRole.User,
+            Nickname = Nickname,
+            Email = Email,
+            Phone = Phone
+        });
+
+        if (res?.status == StatusCode.Success)
+        {
+
+        }
+    }
+}

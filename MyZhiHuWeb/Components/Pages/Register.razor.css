@@ -1,5 +1,5 @@
 
-.login {
+.register {
     width: 100%;
     height: 100vh;
     background-color: #fff;
@@ -13,10 +13,4 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
-}
-
-.area {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }

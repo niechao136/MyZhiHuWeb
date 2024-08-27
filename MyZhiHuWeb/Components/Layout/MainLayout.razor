@@ -1,5 +1,4 @@
-﻿@using MyZhiHuWeb.Services
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
 <div class="page">
     <main>
@@ -21,11 +20,4 @@
 </div>
 
 @code {
-    [Inject]
-    private HttpService HttpService { get; set; } = null!;
-
-    protected override async void OnInitialized()
-    {
-        var res = await HttpService.PostAsync<string>("/api/user/info");
-    }
 }
