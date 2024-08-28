@@ -2,6 +2,16 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<UEditor.Editor
+    @ref="Editor"
+    @bind-Value="Value"
+    @bind-Html="Html"
+    Height="500px"
+    Width="700px"/>
 
-Welcome to your new app.
+@code
+{
+    public string Value = "Hello Blazor";
+    public string Html = "";
+    public Editor Editor = null!;
+}

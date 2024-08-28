@@ -15,7 +15,14 @@
 <body>
 <Routes @rendermode="InteractiveServer" />
 <AntContainer/>
+<script>
+    window.NEDITOR_UPLOAD = "/api/image/upload";
+</script>
 <script src="_framework/blazor.web.js"></script>
+<script src="_content/UEditorBlazor/neditor.config.js"></script>
+<script src="_content/UEditorBlazor/neditor.all.min.js" defer></script>
+<script src="_content/UEditorBlazor/neditor.service.js"></script>
+<script src="_content/UEditorBlazor/ueditor-blazor.js"></script>
 </body>
 
 </html>
