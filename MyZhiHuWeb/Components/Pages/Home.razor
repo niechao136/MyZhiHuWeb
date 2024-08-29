@@ -2,16 +2,15 @@
 
 <PageTitle>Home</PageTitle>
 
-<UEditor.Editor
-    @ref="Editor"
-    @bind-Value="Value"
-    @bind-Html="Html"
-    Height="500px"
-    Width="700px"/>
+<SfRichTextEditor>
+    <RichTextEditorImageSettings SaveUrl="api/image/upload" />
+    <RichTextEditorEvents OnImageUploadSuccess="OnImageUploadSuccess"/>
+</SfRichTextEditor>
 
 @code
 {
-    public string Value = "Hello Blazor";
-    public string Html = "";
-    public Editor Editor = null!;
+    public void OnImageUploadSuccess(ImageSuccessEventArgs args)
+    {
+        Console.WriteLine(args.StatusText);
+    }
 }

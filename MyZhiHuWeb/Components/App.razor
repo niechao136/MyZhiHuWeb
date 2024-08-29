@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="bootstrap/bootstrap.min.css"/>
     <link rel="stylesheet" href="app.css"/>
     <link rel="stylesheet" href="MyZhiHuWeb.styles.css"/>
+    <link href="_content/Syncfusion.Blazor.Themes/bootstrap5.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="favicon.png"/>
     <HeadOutlet/>
 </head>
@@ -15,14 +16,51 @@
 <body>
 <Routes @rendermode="InteractiveServer" />
 <AntContainer/>
-<script>
-    window.NEDITOR_UPLOAD = "/api/image/upload";
-</script>
 <script src="_framework/blazor.web.js"></script>
 <script src="_content/UEditorBlazor/neditor.config.js"></script>
 <script src="_content/UEditorBlazor/neditor.all.min.js" defer></script>
 <script src="_content/UEditorBlazor/neditor.service.js"></script>
 <script src="_content/UEditorBlazor/ueditor-blazor.js"></script>
+<script src="_content/Syncfusion.Blazor.Core/scripts/syncfusion-blazor.min.js" type="text/javascript"></script>
+<script>
+    window.NEDITOR_UPLOAD = "/api/image/upload";
+    window.UEDITOR_CONFIG['imageUploadService'] = function(context, editor) {
+        return {
+            /**
+             * 触发fileQueued事件时执行
+             * 当文件被加入队列以后触发，用来设置上传相关的数据 (比如: url和自定义参数)
+             */
+            setUploadData: function(file) {
+                return file;
+            },
+            /**
+             * 触发uploadBeforeSend事件时执行
+             * 在文件上传之前触发，用来添加附带参数
+             */
+            setFormData: function(object, data, headers) {
+                return data;
+            },
+            /**
+             * 触发startUpload事件时执行
+             * 当开始上传流程时触发，用来设置Uploader配置项
+             */
+            setUploaderOptions: function(uploader) {
+                return uploader;
+            },
+            /**
+             * 触发uploadSuccess事件时执行
+             * 当文件上传成功时触发，可以在这里修改上传接口返回的response对象
+             */
+            getResponseSuccess: function(res) {
+                return res.code == 200;
+            },
+            /* 指定上传接口返回的response中图片路径的字段，默认为 url
+             * 如果图片路径字段不是res的属性，可以写成 对象.属性 的方式，例如：data.url
+             * */
+            imageSrcField: 'url'
+        }
+    };
+</script>
 </body>
 
 </html>

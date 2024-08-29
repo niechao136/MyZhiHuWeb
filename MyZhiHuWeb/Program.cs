@@ -1,5 +1,8 @@
 using MyZhiHuWeb.Components;
 using MyZhiHuWeb.Services;
+using Syncfusion.Blazor;
+
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NCaF1cWWhAYVZpR2Nbe05zflBFal5ZVAciSV9jS3pTfkdqWXxbc3ZdRGFcVg==");
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +15,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddAntDesign();
+builder.Services.AddSyncfusionBlazor();
 builder.Services.AddSingleton(new HttpService(configuration));
 
 var app = builder.Build();

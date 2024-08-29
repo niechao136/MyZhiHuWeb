@@ -6,8 +6,9 @@ namespace MyZhiHuWeb.Controllers;
 public class ImageController : Controller
 {
     // GET
-    public IActionResult Upload()
+    public void Upload(IList<IFormFile> UploadFiles)
     {
-        return Ok();
+        Response.StatusCode = 200;
+        Response.WriteAsync(UploadFiles[0].FileName + " Upload Success");
     }
 }
